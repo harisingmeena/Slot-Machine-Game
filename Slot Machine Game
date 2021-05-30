@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang = "en">
+    <head>
+<meta charset ="UTF-8" />
+<meta name = "viewport" content ="width= device-width, initial-scale=1.0" />
+<title> document</title>
+<script src ="script.js"></script>
+<link rel="stylesheet" href="style.css">
+    </head>
+
+    <body>
+        <div class ="machine">
+          <div class = "slot" id = slot1 >
+            <div class='animation' id='value1'>😂</div>
+          </div>
+          <div class = "slot" id = slot2 >
+            <div class='animation' id='value2'>😱</div>
+          </div>
+          <div class = "slot" id = slot3 >
+            <div class='animation' id='value3'>🤑</div>
+          </div>
+        </div>
+
+        <div class='controllers'>
+        <input type='number' id='inpSpeed' min='1' max='10' value='1'>
+        
+        <button id='btnStart'onclick="startclick()">START</button>
+        <button id='btnStop' onclick="stopclick()">STOP</button>
+
+    </div>
+    <div class='output' >
+        <p id='myoutput'>Wow, My Game is Running</p>
+    </div>
+
+
+    </body>
+</html>
+#script.js
+
+let value1 = document.getElementById('value1')
+let value2 = document.getElementById('value2')
+let value3 = document.getElementById('value3')
+
+let inpSpeed = document.getElementById('inpSpeed')
+let btnStart = document.getElementById('btnStart')
+let btnStop = document.getElementById('btnStop')
+
+let myoutput = document.getElementById('myoutput')
+
+let values = [
+    '😍','😊','😜','😂','😘','😎','😉','😱','🤑'
+]
+
+// it will choose random  value from above 9 elements
+function getRandomValue(){
+    return values[Math.floor(Math.random()*9)]
+}
+
+
+function upddateAnimation(newSpeed){
+    if(animationid) clearInterval(animationid)
+
+    animationid = setInterval(()=>{
+        value1.innerText = getRandomValue()
+        value2.innerText = getRandomValue()
+        value3.innerText = getRandomValue()
+        
+    },1000/newSpeed)
+}
+
+inpSpeed.onchange = function(ev){
+    // console.log("value changed to ",ev.target.value)
+    // document.documentElement => this is ':root' of css
+    document.documentElement.style.setProperty('--speed',ev.target.value)
+    updateAnimation(ev.target.value)
+  
+}
+
+function stopclick(){
+    clearInterval(animationid);
+
+    console.log("stop button clicked")
+    if(value1.innerText==value2.innerText && value2.innerText==value3.innerText){
+        text = ' Well Done Champ , You Won'
+    }else{
+        text = ' OOPS Give it another try'
+    }
+
+    value1.classList.remove('animation')
+    value2.classList.remove('animation')
+    value3.classList.remove('animation')
+    myoutput.textContent = text
+
+
+}
+
+function startclick(){
+    upddateAnimation(inpSpeed.value)
+    value1.classList.add('animation')
+    value2.classList.add('animation')
+    value3.classList.add('animation')
+    
+
+    myoutput.textContent = 'Wow,Game is Runnning'
+    
+}
+root{
+    --speed:1;
+}
+/* Above is the variable declaration for CSS , we can change variables to Javacript*/
+.machine {
+    background-color:rgb(207, 145, 82);
+    border: dashed brown 4px;
+    height:300px;
+    width: 900px;
+    margin:30px;
+    display: flex;
+
+    
+}
+
+.slot{
+    height:250px;
+    width:250px;
+    margin:20px;
+    background-color: beige;
+    border: solid darkblue 3px;
+    text-align: center;
+    font-size: 120px;
+    line-height: 250px;
+
+    overflow: hidden;
+}
+
+.animation{
+    animation-name: slotspin;
+    animation-iteration-count:  infinite;
+    animation-duration: calc(1s / var(--speed)) ;
+}
+
+@keyframes slotspin{
+    0%{
+        transform: translateY(-200px);
+    }
+
+    100%{
+        transform: translateY(200px);
+    }
+}
+
+#inpSpeed{
+    font-size: 30pt;
+    margin-left: 100px;
+    width:70px;
+    margin:30px
+
+}
+
+.controllers{
+    background-color: rgb(159, 182, 211);
+    border: solid rgb(24, 24, 145) 8px;
+    display: flex;
+    align-items: center;
+    align-content: space-between;
+    justify-content: center;
+    width: 900px;
+    margin:30px;
+}
+
+#btnStop{
+    font-size: 30pt;
+    margin:50px;
+    background-color: crimson;
+
+}
+
+#btnStart{
+    font-size: 30pt;
+    margin:50px;
+    background-image: radial-gradient(rgb(44, 158, 167));
+    background-color: cadetblue;
+}
+
+.output{
+
+    background-color:lavenderblush;
+    border: solid blueviolet 8px;
+    display: flex;
+    font-size: 30pt;
+    padding:2pt;
+    align-items: center;
+    align-content: space-between;
+    justify-content: center;
+    width: 900px;
+    margin-top:10px;
+    margin-left:30px;
+    color: rgb(143, 47, 143);
+}
+
+
+
